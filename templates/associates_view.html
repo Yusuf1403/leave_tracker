@@ -1,0 +1,320 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associates View - Leave Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-gray-100" x-data="associatesView()">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-semibold">Leave Management System</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('manager_view') }}" class="text-gray-700 hover:text-gray-900">Manager View</a>
+                    <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        Associates on Leave Today Section -->
+        <!-- <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+            <div class="p-4 flex justify-between items-center">
+                <h2 class="text-2xl font-bold">Associates on Leave Today</h2>
+                <span class="text-gray-600" x-text="`Showing ${leavesToday.length} associates`"></span>
+            </div>
+            
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Period</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Balance</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <template x-for="(associate, index) in displayedLeavesToday" :key="index">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.username"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.current_leave.leave_type"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span x-text="`${associate.current_leave.from} to ${associate.current_leave.to}`"></span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div>Sick: <span x-text="associate.leave_balance.sick_leave"></span></div>
+                                <div>Casual: <span x-text="associate.leave_balance.casual_leave"></span></div>
+                                <div>Earned: <span x-text="associate.leave_balance.earned_leave"></span></div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="p-4 flex justify-center" x-show="leavesToday.length > displayedLeavesToday.length">
+                <button 
+                    @click="loadMoreLeavesToday()" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Load More
+                </button>
+            </div>
+        </div>
+
+         All Team Associates Section -->
+        <!-- <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="p-4 flex justify-between items-center">
+                <h2 class="text-2xl font-bold">All Team Associates</h2>
+                <span class="text-gray-600" x-text="`Showing ${displayedAssociates.length} of ${associates.length} associates`"></span>
+            </div>
+            
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sick Leave</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Casual Leave</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earned Leave</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <template x-for="(associate, index) in displayedAssociates" :key="index">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span x-text="associate.username"></span>
+                                <span x-show="associate.current_leave" class="ml-2 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                                    On Leave
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.leave_balance.sick_leave"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.leave_balance.casual_leave"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.leave_balance.earned_leave"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <template x-if="associate.current_leave">
+                                    <div class="text-sm text-gray-900">
+                                        <span x-text="associate.current_leave.leave_type"></span>
+                                        <span x-text="`(${associate.current_leave.from} to ${associate.current_leave.to})`"></span>
+                                    </div>
+                                </template>
+                                <template x-if="!associate.current_leave">
+                                    <span class="text-green-600">Available</span>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="p-4 flex justify-center" x-show="associates.length > displayedAssociates.length">
+                <button 
+                    @click="loadMoreAssociates()" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Load More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function associatesView() {
+            return {
+                associates: {{ associates | tojson }},
+                leavesToday: {{ associates | selectattr('current_leave') | list | tojson }},
+                displayedAssociates: [],
+                displayedLeavesToday: [],
+                pageSize: 5,
+
+                init() {
+                    this.displayedAssociates = this.associates.slice(0, this.pageSize);
+                    this.displayedLeavesToday = this.leavesToday.slice(0, this.pageSize);
+                },
+
+                loadMoreAssociates() {
+                    const currentLength = this.displayedAssociates.length;
+                    const newItems = this.associates.slice(currentLength, currentLength + this.pageSize);
+                    this.displayedAssociates = [...this.displayedAssociates, ...newItems];
+                },
+
+                loadMoreLeavesToday() {
+                    const currentLength = this.displayedLeavesToday.length;
+                    const newItems = this.leavesToday.slice(currentLength, currentLength + this.pageSize);
+                    this.displayedLeavesToday = [...this.displayedLeavesToday, ...newItems];
+                }
+            };
+        }
+    </script>
+</body> -->
+<!-- </html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associates View - Leave Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-gray-100" x-data="associatesView()">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-semibold">Leave Management System</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('manager_view') }}" class="text-gray-700 hover:text-gray-900">Manager View</a>
+                    <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Associates on Leave Today Section -->
+        <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+            <div class="p-4 flex justify-between items-center">
+                <h2 class="text-2xl font-bold">Associates on Leave Today</h2>
+                <span class="text-gray-600" x-text="`Showing ${leavesToday.length} associates`"></span>
+            </div>
+            
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Duration</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Period</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Balance</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <template x-for="(associate, index) in displayedLeavesToday" :key="index">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.username"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.current_leave.leave_type"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.current_leave.duration"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span x-text="`${associate.current_leave.from} to ${associate.current_leave.to}`"></span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div>Sick: <span x-text="associate.leave_balance.sick_leave"></span></div>
+                                <div>Casual: <span x-text="associate.leave_balance.casual_leave"></span></div>
+                                <div>Earned: <span x-text="associate.leave_balance.earned_leave"></span></div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="p-4 flex justify-center" x-show="leavesToday.length > displayedLeavesToday.length">
+                <button 
+                    @click="loadMoreLeavesToday()" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Load More
+                </button>
+            </div>
+        </div>
+
+        <!-- All Team Associates Section -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="p-4 flex justify-between items-center">
+                <h2 class="text-2xl font-bold">All Team Associates</h2>
+                <span class="text-gray-600" x-text="`Showing ${displayedAssociates.length} of ${associates.length} associates`"></span>
+            </div>
+            
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sick Leave</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Casual Leave</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earned Leave</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <template x-for="(associate, index) in displayedAssociates" :key="index">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span x-text="associate.username"></span>
+                                <span x-show="associate.current_leave" class="ml-2 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                                    On Leave
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.leave_balance.sick_leave"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.leave_balance.casual_leave"></td>
+                            <td class="px-6 py-4 whitespace-nowrap" x-text="associate.leave_balance.earned_leave"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <template x-if="associate.current_leave">
+                                    <div class="text-sm text-gray-900">
+                                        <span x-text="associate.current_leave.leave_type"></span>
+                                        <span x-text="`(${associate.current_leave.from} to ${associate.current_leave.to})`"></span>
+                                    </div>
+                                </template>
+                                <template x-if="!associate.current_leave">
+                                    <span class="text-green-600">Available</span>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="p-4 flex justify-center" x-show="associates.length > displayedAssociates.length">
+                <button 
+                    @click="loadMoreAssociates()" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Load More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function associatesView() {
+            return {
+                associates: {{ associates | tojson }},
+                leavesToday: {{ associates | selectattr('current_leave') | list | tojson }},
+                displayedAssociates: [],
+                displayedLeavesToday: [],
+                pageSize: 5,
+
+                init() {
+                    this.displayedAssociates = this.associates.slice(0, this.pageSize);
+                    this.displayedLeavesToday = this.leavesToday.slice(0, this.pageSize);
+                },
+
+                loadMoreAssociates() {
+                    const currentLength = this.displayedAssociates.length;
+                    const newItems = this.associates.slice(currentLength, currentLength + this.pageSize);
+                    this.displayedAssociates = [...this.displayedAssociates, ...newItems];
+                },
+
+                loadMoreLeavesToday() {
+                    const currentLength = this.displayedLeavesToday.length;
+                    const newItems = this.leavesToday.slice(currentLength, currentLength + this.pageSize);
+                    this.displayedLeavesToday = [...this.displayedLeavesToday, ...newItems];
+                }
+            };
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,41 @@
+id,username,leave_type,start_date,end_date,reason,status,team,applied_date,from,to,duration,total_days,attachment
+1,admin,Sick Leave,2025-01-23,2025-01-23,not feeling well,Approved,admin,2025-01-21,,,,,
+2,emp1,Earned Leave,2025-01-24,2025-01-25,family function,Rejected,team1,2025-01-21,,,,,
+3,emp1,Sick Leave,2025-01-23,2025-01-23,not feeling well,Rejected,team1,2025-01-22,,,,,
+4,emp1,Sick Leave,,,not feeling well,Rejected,team1,2025-01-23,2025-01-24,2025-01-24,,,
+5,emp1,Earned Leave,,,hgbag,Approved,team1,2025-01-25,2025-01-25,2025-01-25,,,
+6,emp1,Casual Leave,,,fgh,Approved,team1,2025-01-25,2025-01-26,2025-01-26,,,
+7,emp2,Casual Leave,,,rtyuio,Approved,team1,2025-01-25,2025-01-26,2025-01-26,,,
+8,emp1,Earned Leave,,,xfghjklkjhgfd,Approved,team1,2025-01-25,2025-02-02,2025-02-02,Half Day,0.5,
+9,emp2,Sick Leave,,,zdfg,Approved,team1,2025-01-25,2025-01-31,2025-01-31,Half Day,0.5,uploads\emp2_2025-01-31_sick_leave.png
+10,emp2,Sick Leave,,,fghn,Approved,team1,2025-01-25,2025-01-25,2025-01-25,Full Day,0.0,uploads\emp2_2025-01-25_sick_leave.png
+11,emp1,Sick Leave,,,sdfghj,Approved,team1,2025-01-25,2025-01-16,2025-01-16,Full Day,1.0,uploads\emp1_2025-01-16_sick_leave.png
+12,ys,Earned Leave,,,function,Approved,Digital Automation,2025-01-25,2025-02-03,2025-02-17,Full Day,15.0,
+13,emp1,Sick Leave,,,zzzzzzzzzzzzzzzzzzzzzzzzzz,Approved,team1,2025-01-25,2025-01-24,2025-01-24,Full Day,1.0,uploads\emp1_2025-01-24_sick_leave.png
+14,prasad,Casual Leave,,,asdfdsaz,Approved,team1,2025-01-25,2025-01-24,2025-01-24,Half Day,0.5,
+15,prasad,Casual Leave,,,nwjfjfkf;anfa,Approved,team1,2025-01-25,2025-01-17,2025-01-17,Full Day,1.0,
+16,ys,Earned Leave,,,wefargsfgaf,Approved,team1,2025-01-25,2025-02-03,2025-02-03,Full Day,1.0,
+17,prasad,Earned Leave,,,bjklkkk,Approved,team1,2025-01-25,2025-02-06,2025-02-07,Full Day,2.0,
+18,emp1,Earned Leave,,,dfhjjkkkkkk,Approved,team1,2025-01-25,2025-02-03,2025-02-03,Half Day,1.0,
+19,emp2,Earned Leave,,,fastgrtrt,Approved,team1,2025-01-25,2025-02-10,2025-02-10,Half Day,1.0,
+20,prasad,Sick Leave,,,fwrat,Approved,team1,2025-01-25,2025-01-09,2025-01-09,Half Day,1.0,uploads\prasad_2025-01-09_sick_leave.png
+21,prasad,Sick Leave,,,rhrd,Approved,team1,2025-01-25,2025-01-24,2025-01-24,Full Day,1.0,uploads\prasad_2025-01-24_sick_leave.png
+22,prasad,Earned Leave,,,xvdghwyh,Approved,team1,2025-01-25,2025-02-20,2025-02-20,Full Day,1.0,
+23,prasad,Casual Leave,,,dfgg,Approved,team1,2025-01-25,2025-02-07,2025-02-07,Full Day,1.0,
+24,emp1,Earned Leave,,,fgsgsgs,Approved,team1,2025-01-25,2025-02-26,2025-02-26,Full Day,1.0,
+25,emp1,Earned Leave,,,fdsgagag,Approved,team1,2025-01-25,2025-02-17,2025-02-20,Full Day,4.0,
+26,emp2,Earned Leave,,,fdtgqerywtj,Approved,team1,2025-01-25,2025-02-12,2025-02-12,Full Day,1.0,
+27,emp2,Sick Leave,,,fvgdshsh,Approved,team1,2025-01-25,2025-01-27,2025-01-27,Full Day,1.0,uploads\emp2_2025-01-27_sick_leave.png
+28,prasad,Casual Leave,,,brththe,Approved,team1,2025-01-25,2025-02-20,2025-02-20,Full Day,1.0,
+29,prasad,Casual Leave,,,fgsfhsghg,Approved,team1,2025-01-25,2025-02-06,2025-02-21,Full Day,12.0,
+30,ys,Casual Leave,,,gghrtjhshjs,Approved,team1,2025-01-25,2025-03-12,2025-03-12,Full Day,1.0,
+31,emp1,Casual Leave,,,tjsfjgfjxgfjxcvgnx,Approved,team1,2025-01-25,2025-03-12,2025-03-12,Full Day,1.0,
+32,prasad,Casual Leave,,,"tssdf,v,mnv,v,n",Approved,team1,2025-01-25,2025-02-10,2025-02-10,Full Day,1.0,
+33,emp1,Casual Leave,,,adgadhshsfjfg,Approved,team1,2025-01-25,2025-01-25,2025-01-25,Full Day,1.0,
+34,emp2,Sick Leave,,,gwteryyr,Approved,team1,2025-01-25,2025-01-25,2025-01-25,Half Day,1.0,uploads\emp2_2025-01-25_sick_leave.png
+35,emp1,Earned Leave,,,gerwgrgarg,Pending,team1,2025-01-25,2025-02-27,2025-02-28,Full Day,2.0,
+36,emp1,Earned Leave,,,sgsagsa,Pending,team1,2025-01-25,2025-02-07,2025-02-07,Full Day,1.0,
+37,emp1,Casual Leave,,,wethh,Pending,team1,2025-01-25,2025-02-06,2025-02-07,Full Day,2.0,
+38,emp2,Casual Leave,,,egttgseg,Pending,team1,2025-01-25,2025-02-04,2025-02-04,Full Day,1.0,
+39,emp2,Casual Leave,,,dfgdsf,Pending,team1,2025-01-25,2025-01-25,2025-01-25,Half Day,1.0,
+40,emp2,Earned Leave,,,sdsfgdsgsg,Pending,team1,2025-01-25,2025-01-25,2025-01-25,Half Day,1.0,

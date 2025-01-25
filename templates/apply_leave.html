@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave - Leave Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="{{ url_for('dashboard') }}" class="text-xl font-bold text-blue-600">Leave Management System</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-700">Welcome, {{ session['username'] }}</span>
+                <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 text-center">Apply for Leave</h2>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="mb-4 p-3 rounded 
+                                {% if category == 'error' %}bg-red-100 text-red-700
+                                {% elif category == 'success' %}bg-green-100 text-green-700
+                                {% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('apply_leave') }}" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="leave_type">
+                            Leave Type
+                        </label>
+                        <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="leave_type" name="leave_type" required onchange="toggleAttachment(this)">
+                            <option value="">Select Leave Type</option>
+                            <option value="Sick Leave">Sick Leave (Balance: {{ balance.sick_leave }})</option>
+                            <option value="Casual Leave">Casual Leave (Balance: {{ balance.casual_leave }})</option>
+                            <option value="Earned Leave">Paid Time off (Balance: {{ balance.earned_leave }})</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4 flex space-x-4">
+                        <div class="w-1/2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="from_date">
+                                From
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                     id="from_date" name="from_date" type="date" required>
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="to_date">
+                                To
+                            </label>
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                   id="to_date" name="to_date" type="date" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Leave Duration
+                        </label>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="leave_duration" value="Full Day" 
+                                       class="form-radio" checked>
+                                <span class="ml-2">Full Day</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="leave_duration" value="Half Day" 
+                                       class="form-radio">
+                                <span class="ml-2">Half Day</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="attachmentSection" class="mb-4 hidden">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="attachment">
+                            Sick Leave Attachment
+                        </label>
+                        <input type="file" name="attachment" id="attachment" 
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="reason">
+                            Reason
+                        </label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                  id="reason" name="reason" rows="4" required></textarea>
+                    </div>
+
+                    <div id="workingDaysDisplay" class="mb-4 text-gray-700">
+                        Working Days: <span id="workingDaysCount">0</span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                type="submit">
+                            Submit Application
+                        </button>
+                        <a href="{{ url_for('dashboard') }}"
+                           class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set date constraints
+        const today = new Date().toISOString().split('T')[0];
+        
+        // From date input
+        const fromDateInput = document.getElementById('from_date');
+        fromDateInput.setAttribute('max', '9999-12-31');  // Remove max date constraint
+        fromDateInput.addEventListener('change', updateToDateMin);
+        
+        // To date input
+        const toDateInput = document.getElementById('to_date');
+        toDateInput.setAttribute('max', '9999-12-31');  // Remove max date constraint
+        
+        function updateToDateMin() {
+            // Ensure to_date is not before from_date
+            toDateInput.setAttribute('min', fromDateInput.value);
+        }
+        
+        function toggleAttachment(select) {
+            const attachmentSection = document.getElementById('attachmentSection');
+            if (select.value === 'Sick Leave') {
+                attachmentSection.classList.remove('hidden');
+            } else {
+                attachmentSection.classList.add('hidden');
+            }
+        }
+
+        // Calculate and display working days
+        function calculateWorkingDays() {
+            const fromDate = new Date(fromDateInput.value);
+            const toDate = new Date(toDateInput.value);
+            const leaveTypeSelect = document.getElementById('leave_type');
+            const halfDayRadio = document.querySelector('input[name="leave_duration"][value="Half Day"]');
+            const workingDaysDisplay = document.getElementById('workingDaysCount');
+            
+            let workingDays = 0;
+            let currentDate = new Date(fromDate);
+            
+            while (currentDate <= toDate) {
+                // Count only weekdays (0-4 are weekdays)
+                if (currentDate.getDay() > 0 && currentDate.getDay() < 5) {
+                    workingDays++;
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            // Adjust for half-day
+            if (halfDayRadio.checked) {
+                workingDays = 0.5;
+            }
+            
+            // Display working days
+            workingDaysDisplay.textContent = workingDays;
+        }
+
+        // Add event listeners
+        fromDateInput.addEventListener('change', calculateWorkingDays);
+        toDateInput.addEventListener('change', calculateWorkingDays);
+        document.querySelectorAll('input[name="leave_duration"]').forEach(radio => {
+            radio.addEventListener('change', calculateWorkingDays);
+        });
+    </script>
+</body>
+</html>

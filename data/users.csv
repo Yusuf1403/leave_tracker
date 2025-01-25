@@ -1,0 +1,7 @@
+username,password,role,team
+admin,admin123,admin,admin
+manager1,mgr123,manager,team1
+emp1,emp123,employee,team1
+emp2,emp456,employee,team1
+prasad,prasad123,employee,team1
+ys,ys1403,employee,team1
